@@ -59,7 +59,7 @@ function Login() {
 
               </div>
               <div className={style.login__wrapper__table_subtitle}>
-                Войти в систему
+                Войти в системуasdasdasdasdsada
               </div>
             </div>
 
