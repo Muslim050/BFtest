@@ -1,3 +1,3 @@
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+const backendURL = process.env.NEXT_PUBLIC_API_URL;
 
 export default backendURL;

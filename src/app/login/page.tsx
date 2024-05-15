@@ -1,66 +1,62 @@
-import React from "react";
-//
-import Eclipse from "src/assets/Site/Ellipse.png";
+'use client'
 
-import { useDispatch } from "react-redux";
-import { login } from "@/core/services/auth";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import style from "./Login.module.scss";
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import style from './Login.module.scss'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/core/store/store'
+import { useRouter } from 'next/navigation'
+import { login } from '@/core/features/auth'
 
 function Login() {
-  const dispatch = useDispatch();
-  let navigate = useNavigate();
-  const [isLogin, setIsLogin] = React.useState(false);
-  const [showPasswordOld, setShowPasswordOld] = React.useState(false);
-
+  const dispatch = useDispatch<AppDispatch>() // Use AppDispatch to type the dispatch function
+  const router = useRouter() // Using useRouter instead of useNavigate
+  const [isLogin, setIsLogin] = React.useState(false)
+  const [showPasswordOld, setShowPasswordOld] = React.useState(false)
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
   } = useForm({
     defaultValues: {
-      login: "",
-      password: "",
+      login: '',
+      password: '',
     },
-    mode: "onBlur",
-  });
+    mode: 'onBlur',
+  })
   const handleTogglePasswordOld = () => {
-    setShowPasswordOld(!showPasswordOld);
-  };
-  const onSubmit = async (data:any) => {
+    setShowPasswordOld(!showPasswordOld)
+  }
+  const onSubmit = async (data: any) => {
     try {
-      setIsLogin(true);
+      setIsLogin(true)
 
-      const logindata = dispatch(login({data}));
-      const role = localStorage.getItem("role");
-      const routesByRole = {
-        admin: "/order",
-        publisher: "/inventory",
-        channel: "/inventory",
-        advertiser: "/order",
-        guest: "/login",
-        advertising_agency: "/order",
-      };
-      const redirectRoute = role ? routesByRole[role] : routesByRole.guest;
-      navigate(redirectRoute);
-      setIsLogin(false);
+      const loginData = await dispatch(login({ data })).unwrap()
+      const role = localStorage.getItem('role')
+      const routesByRole: any = {
+        admin: '/dashboard/profile',
+        publisher: '/inventory',
+        channel: '/inventory',
+        // advertiser: "/order",
+        guest: '/login',
+        // advertising_agency: "/order",
+      }
+      const redirectRoute = role ? routesByRole[role] : routesByRole.guest
+      router.push(redirectRoute) // Use router.push to navigate
+      setIsLogin(false)
     } catch (error) {
-      setIsLogin(false);
+      setIsLogin(false)
     }
-  };
+  }
 
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={style.login}>
-          <img className={style.eclipse_1} src={Eclipse} alt="" />
-          <img className={style.eclipse_2} src={Eclipse} alt="" />
-
           <div className={style.login__wrapper}>
             <div className={style.login__wrapper__table_header}>
               <div className={style.login__wrapper__table_title}>
-                BRANDFORMANCE
+
               </div>
               <div className={style.login__wrapper__table_subtitle}>
                 Войти в систему
@@ -70,17 +66,16 @@ function Login() {
             <div>
               <div
                 className={style.modalWindow}
-                style={{ marginBottom: "40px" }}
+                style={{ marginBottom: '40px' }}
               >
                 <div className={style.inputContainer}>
-
                   <input
                     className={style.modalWindow__input}
                     type="text"
                     placeholder="Логин"
                     autoComplete="off"
-                    {...register("login", {
-                      required: "Поле обезательно к заполнению",
+                    {...register('login', {
+                      required: 'Поле обезательно к заполнению',
                     })}
                   />
 
@@ -92,17 +87,16 @@ function Login() {
 
               <div
                 className={style.modalWindow}
-                style={{ marginBottom: "80px" }}
+                style={{ marginBottom: '80px' }}
               >
                 <div className={style.inputContainer}>
-
                   <input
                     className={style.modalWindow__input}
-                    type={showPasswordOld ? "text" : "password"}
+                    type={showPasswordOld ? 'text' : 'password'}
                     placeholder="Пароль"
                     autoComplete="off"
-                    {...register("password", {
-                      required: "Поле обезательно к заполнению",
+                    {...register('password', {
+                      required: 'Поле обезательно к заполнению',
                     })}
                   />
                 </div>
@@ -113,14 +107,12 @@ function Login() {
                 <div
                   onClick={handleTogglePasswordOld}
                   style={{
-                    position: "absolute",
-                    right: "20px",
-                    top: "15px",
-                    cursor: "pointer",
+                    position: 'absolute',
+                    right: '20px',
+                    top: '15px',
+                    cursor: 'pointer',
                   }}
-                >
-
-                </div>
+                ></div>
               </div>
 
               {/* <ButtonUI isValid={true} disabled={!isValid}>
@@ -128,7 +120,7 @@ function Login() {
               </ButtonUI> */}
               <div className={style.btn__wrapper}>
                 <button
-                  style={{ display: "flex", alignItems: "center" }}
+                  style={{ display: 'flex', alignItems: 'center' }}
                   type="submit"
                   disabled={!isValid || isLogin}
                   className={
@@ -157,7 +149,7 @@ function Login() {
         </div>
       </form>
     </>
-  );
+  )
 }
 
-export default Login;
+export default Login
