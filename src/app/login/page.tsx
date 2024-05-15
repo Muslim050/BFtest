@@ -4,9 +4,9 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import style from './Login.module.scss'
 import { useDispatch } from 'react-redux'
-import { AppDispatch } from '@/core/store/store'
+import { AppDispatch } from 'src/core/store/store'
 import { useRouter } from 'next/navigation'
-import { login } from '@/core/features/auth'
+import { login } from 'src/core/features/auth'
 
 function Login() {
   const dispatch = useDispatch<AppDispatch>() // Use AppDispatch to type the dispatch function
